@@ -1,13 +1,23 @@
-name: learn-github-actions
-run-name: ${{ github.actor }} is learning GitHub Actions
-on: [push]
+name: GitHub Actions Build and Deploy Demo
+on:
+  push:
+    branches:
+      - master
 jobs:
-  check-bats-version:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '14'
-      - run: npm install -g bats
-      - run: bats -v
+    - name: Checkout
+      uses: actions/checkout@v2 # If you're using actions/checkout@v2 you must set persist-credentials to false in most cases for the deployment to work correctly.
+      with:
+        persist-credentials: false
+    - name: Install and Build
+      run: |
+        npm install
+        npm run-script build
+    - name: Deploy
+      uses: JamesIves/github-pages-deploy-action@releases/v3
+      with:
+        ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+        BRANCH: gh-pages
+        FOLDER: build
