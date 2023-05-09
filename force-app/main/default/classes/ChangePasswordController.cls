@@ -15,6 +15,7 @@
  * functionality
  * functionality
  * ccc
+ * ccc
  */
 public with sharing class ChangePasswordController {
     public String oldPassword {get; set;}
