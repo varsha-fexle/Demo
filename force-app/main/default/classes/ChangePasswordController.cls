@@ -5,6 +5,7 @@
  * exposes the change 
  * password 
  * abc
+ * bca
  * functionality
  */
 public with sharing class ChangePasswordController {
