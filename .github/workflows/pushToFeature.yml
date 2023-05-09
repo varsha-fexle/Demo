@@ -1,13 +1,13 @@
-name: GitHub Actions Build and Deploy Demo
-on:
-  push:
-    branches:
-      - master
+name: Auto-merge Dependabot
+on: pull_request
+
 jobs:
-  build-and-deploy:
+  automerge:
     runs-on: ubuntu-latest
+    if: github.actor == 'dependabot[bot]'
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout
-    - name: Create Pull Request
-      uses: varsha-fexle/Demo/create-pull-request
+      - uses: peter-evans/enable-pull-request-automerge@v3
+        with:
+          token: ${{ secrets.ACTIONS_BOT_TOKEN }}
+          pull-request-number: ${{ github.event.pull_request.number }}
+          merge-method: squash
