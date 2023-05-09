@@ -2,6 +2,7 @@ on:
   push:
     branches:
       - Actions
+
 jobs:
   createPullRequest:
     runs-on: ubuntu-latest
