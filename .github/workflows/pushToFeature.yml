@@ -1,11 +1,19 @@
-on: [push]
+name: pushToFeature
+
+on:
+  push:
+    branches:
+      - local-branch-name
+
 jobs:
-  build:
-   name: Hello world
-   runs-on: ubuntu-latest
-   steps:
-    - uses: actions/checkout@v2
-    - name: Write a multi-line message
-      run: |
-        echo This demo file shows a 
-        echo very basic and easy-to-understand workflow.
+  create-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+      - name: Create Branch
+        run: |
+          git config --global user.email "varsha.adwani@fexle.com"
+          git config --global user.name "varsha-fexle"
+          git checkout -b new-branch-name
+          git push origin new-branch-name
