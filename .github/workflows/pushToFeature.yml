@@ -8,6 +8,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout Repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@2.304.0
     - name: Create Pull Request
-      uses: varsha-fexle/Demo/create-pull-request@v3
+      uses: varsha-fexle/Demo/create-pull-request@2.304.0
