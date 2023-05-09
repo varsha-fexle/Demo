@@ -1,11 +1,22 @@
-on: [push]
+name: pushToFeature
+
+on:
+  push:
+    branches:
+      - Actions
+
 jobs:
-  build:
-   name: Hello world
-   runs-on: ubuntu-latest
-   steps:
-    - uses: actions/checkout@v2
-    - name: Write a multi-line message
-      run: |
-        echo This demo file shows a 
-        echo very basic and easy-to-understand workflow.
+  create-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2.304.0
+      - name: Create Pull Request
+        uses: varsha-fexle/Demo/create-pull-request@v2.304.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: 'Create Pull Request'
+          title: 'Pull Request Title'
+          body: 'Pull Request Description'
+          branch: Actions1
+          base: master
