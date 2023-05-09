@@ -3,17 +3,20 @@ name: pushToFeature
 on:
   push:
     branches:
-      - Actions
+      - local-branch-name
 
 jobs:
-  create-branch:
+  create-pr:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
-      - name: Create Branch
-        run: |
-          git config --global user.email "varsha.adwani@fexle.com"
-          git config --global user.name "varsha-fexle"
-          git checkout -b master
-          git push origin master
+      - name: Create Pull Request
+        uses: varsha-fexle/demo/create-pull-request@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: 'Create Pull Request'
+          title: 'Pull Request Title'
+          body: 'Pull Request Description'
+          branch: new-branch-name
+          base: master
