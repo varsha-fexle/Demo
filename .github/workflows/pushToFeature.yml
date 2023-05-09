@@ -8,4 +8,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Create Pull Request
-      uses: demo/create-pull-request@v5
+      uses: Demo/create-pull-request@v5
