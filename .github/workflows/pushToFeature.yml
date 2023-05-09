@@ -10,9 +10,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Create Pull Request
-        uses: varsha-fexle/Demo/create-pull-request@v2
+        uses: varsha-fexle/Demo/create-pull-request@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: 'Create Pull Request'
