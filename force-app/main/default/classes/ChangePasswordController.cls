@@ -1,5 +1,6 @@
 /**
- * An apex page controller that 
+ * An apex page 
+ * controller that 
  * exposes the change 
  * password 
  * functionality
