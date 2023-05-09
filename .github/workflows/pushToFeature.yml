@@ -1,13 +1,13 @@
-name: pushToFeature
-on: pull_request
-
+name: learn-github-actions
+run-name: ${{ github.actor }} is learning GitHub Actions
+on: [push]
 jobs:
-  automerge:
+  check-bats-version:
     runs-on: ubuntu-latest
-    if: github.actor == 'dependabot[bot]'
     steps:
-      - uses: varsha-fexle/Demo/enable-pull-request-automerge@v3
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
-          token: ${{ secrets.ACTIONS_BOT_TOKEN }}
-          pull-request-number: ${{ github.event.pull_request.number }}
-          merge-method: squash
+          node-version: '14'
+      - run: npm install -g bats
+      - run: bats -v
