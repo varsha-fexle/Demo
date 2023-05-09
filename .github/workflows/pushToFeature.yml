@@ -11,7 +11,7 @@ jobs:
       - name: Create report file
         run: date +%s > report.txt
       - name: Create Pull Request
-        uses: /varsha-fexle/Demo/create-pull-request@v2
+        uses: /varsha-fexle/Demo/create-pull-request@v1
         with:
           commit-message: Add report file
           title: '[Example] Add report file'
