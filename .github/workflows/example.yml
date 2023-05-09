@@ -1,3 +1,4 @@
+name: example
 on: [push]
 jobs:
   build:
