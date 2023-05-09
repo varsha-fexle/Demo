@@ -1,4 +1,4 @@
-name: pushToFeature
+name: main
 
 on:
   push:
