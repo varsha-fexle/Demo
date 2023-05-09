@@ -8,4 +8,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Create Pull Request
-      uses: varsha-fexle/create-pull-request@v5
+      uses: demo/create-pull-request@v5
