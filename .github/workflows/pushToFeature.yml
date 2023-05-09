@@ -3,7 +3,7 @@ name: pushToFeature
 on:
   push:
     branches:
-      - local-branch-name
+      - Actions
 
 jobs:
   create-branch:
@@ -15,5 +15,5 @@ jobs:
         run: |
           git config --global user.email "varsha.adwani@fexle.com"
           git config --global user.name "varsha-fexle"
-          git checkout -b new-branch-name
-          git push origin new-branch-name
+          git checkout -b master
+          git push origin master
