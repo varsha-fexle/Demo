@@ -12,11 +12,11 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v2
       - name: Create Pull Request
-        uses: varsha-fexle/demo/create-pull-request@v3
+        uses: varsha-fexle/Demo/create-pull-request@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: 'Create Pull Request'
           title: 'Pull Request Title'
           body: 'Pull Request Description'
-          branch: new-branch-name
+          branch: Actions
           base: master
