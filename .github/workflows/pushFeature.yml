@@ -23,4 +23,4 @@ jobs:
           sfdx force:auth:jwt:grant --clientid "${{ secrets.TARGET_ORG_CONSUMER_KEY }}" --jwtkeyfile jwt.key --username "${{ secrets.TARGET_ORG_USERNAME }}" --setdefaultdevhubusername -a target
 
       - name: Deploy source code
-        run: sfdx force:source:deploy --sourcepath force-app --targetusername target --json
+        run: sfdx force:source:deploy --sourcepath force-app --targetusername secrets.TARGET_ORG_USERNAME --json
