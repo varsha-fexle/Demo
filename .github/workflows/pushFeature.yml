@@ -8,16 +8,17 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [10.x, 12.x, 14.x, 16.x, 18.x]
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2.5.1
 
       - name: Install Salesforce CLI
         uses: actions/setup-node@v2.4.0
         with:
-           strategy:
-              matrix:
-              node-version: [10.x, 12.x, 14.x, 16.x, 18.x]
+          node-version: ${{ matrix.node-version }}
 
       - name: Authorize target org
         run: |
