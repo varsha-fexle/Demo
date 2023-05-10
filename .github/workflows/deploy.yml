@@ -1,9 +1,9 @@
-name: Salesforce Deploy
+name: deploy
 
 on:
   push:
     branches:
-      - actions
+      - Actions
 
 jobs:
   deploy:
