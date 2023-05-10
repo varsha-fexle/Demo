@@ -1,41 +1,46 @@
+name: Sample Workflow
 on:
   push:
-    branches:
-      - Actions
-name: deploy
+    branches: [ master ]
+    paths:
+            - 'force-app/**'
+  pull_request:
+    branches: [ master ]
+    paths:
+            - 'force-app/**'         
+
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+    - uses: actions/checkout@v2
+      with:
+        ref: ${{ github.ref }}
+        fetch-depth: 0
+      if: github.event.action == 'opened' || github.event.action == 'synchronize' || github.event_name == 'push'
+    - uses: actions/setup-node@v1
+      with:
+        node-version: '>=14'
+        check-latest: true
+   
+    - name: Install Salesforce CLI
+      run: |
+        npm install sfdx-cli
+        node_modules/sfdx-cli/bin/run --version
+        node_modules/sfdx-cli/bin/run plugins --core
+    - name: 'Populate auth file with SFDX_URL secret'
+      shell: bash
+      run: 'echo ${{ secrets.SFDX_LR_TEST_URL}} > SFDX_QA'
 
-      - name: Setup Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: "16.x"
-
-      - name: Install Dependencies
-        run: |
-          npm install -g sfdx-cli
-          #npm install gfarb/sfdx-deploy@v1
-
-      - name: SFDX Auth
-        env:
-          SFDX_JWT_KEY: ${{ secrets.SFDX_JWT_KEY }}
-          SFDX_CLIENT_ID: ${{ secrets.SFDX_CLIENT_ID }}
-        run: |
-          echo "${SFDX_JWT_KEY}" > server.key
-          npx sfdx force:auth:jwt:grant --clientid "${SFDX_CLIENT_ID}" --jwtkeyfile "${SFDX_JWT_KEY}" --username sendgrid@fexle.com.dev --setdefaultdevhubusername
-          npx sfdx force:org:display --json -u sendgrid@fexle.com.dev > sfdx-auth.json
-          rm server.key
-          
-
-      - name: Build, Test & Deploy
-        uses: gfarb/sfdx-deploy@v1
-        env:
-          TARGET_USERNAME: sendgrid@fexle.com.dev
-          SOURCE_PATH: force-app
-          DESTRUCTIVE_CHANGES: destructive-changes
-          TEST_LEVEL: RunLocalTests
-          WAIT: 200
+    - name: 'Authenticate against dev hub'
+      run: node_modules/sfdx-cli/bin/run force:auth:sfdxurl:store -f SFDX_QA -s -a LRQA
+        
+    - name: Run Apex test
+      run: 
+        node_modules/sfdx-cli/bin/run force:apex:test:run --resultformat tap --codecoverage -c -r human
+        
+    - name: Deploy source
+      id: Deploy
+      if: github.event_name == 'push'
+      run:
+        node_modules/sfdx-cli/bin/run force:source:deploy -p diffdeploy/force-app -u LRQA --json --loglevel fatal
