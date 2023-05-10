@@ -1,19 +1,35 @@
-name: push
 on:
   push:
     branches:
-      - Actions
+      - "Actions"
+name: DeploytoSalesforceProduction
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
         with:
-          node-version: '14.x'
-      - name: Install Salesforce CLI
-        uses: varsha-fexle/Demo@v2
-      - name: Authenticate with Salesforce Org
-        run: sfdx force:auth:jwt:grant --clientid ${{ secrets.TARGET_ORG_CONSUMER_KEY }} --jwtkeyfile server.key --username ${{ secrets.TARGET_ORG_USERNAME }} --setdefaultdevhubusername --setdefaultusername
-      - name: Deploy to Salesforce Org
-        run: sfdx force:source:deploy -p force-app/main/default -w 5
+          node-version: "16.x"
+
+      - name: SFDX Auth
+        env:
+          SFDX_JWT_KEY: ${{ secrets.SFDX_JWT_KEY }}
+          SFDX_CLIENT_ID: ${{ secrets.SFDX_CLIENT_ID }}
+        run: |
+          echo "${SFDX_JWT_KEY}" > server.key
+          npx sfdx force:auth:jwt:grant --clientid "${SFDX_CLIENT_ID}" --jwtkeyfile server.key --username nitin.rajput@fexle.com.training.staging --setdefaultdevhubusername
+          npx sfdx force:org:display --json -u nitin.rajput@fexle.com.training.staging > sfdx-auth.json
+          rm server.key
+
+      - name: Build, Test & Deploy
+        uses: gfarb/sfdx-deploy@v1
+        env:
+          TARGET_USERNAME: nitin.rajput@fexle.com.training.staging
+          SOURCE_PATH: force-app
+          DESTRUCTIVE_CHANGES: destructive-changes
+          TEST_LEVEL: RunLocalTests
+          WAIT: 200
