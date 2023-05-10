@@ -7,20 +7,22 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout source code
-        uses: actions/checkout@v3
-
-      - name: Install Salesforce CLI
-        run : wget -qO- https://developer.salesforce.com/media/salesforce-cli/sfdx-linux-amd64.tar.xz | tar xJf - ./sfdx/install
-
-      - name: Authorize target org
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Install SFDX CLI
+        run : 
+         npm install sdfx-cli
+      - name: Populate auth file with the SFDX_URL secret of Developer Org
+        shell: bash 
         run: |
-          echo "${{ secrets.TARGET_ORG_JWT }}" | base64 -d > jwt.key
-          #sfdx force:auth:jwt:grant --clientid "${{ secrets.TARGET_ORG_CONSUMER_KEY }}" --jwtkeyfile jwt.key --username "${{ secrets.TARGET_ORG_USERNAME }}" --setdefaultdevhubusername -a target
-          sfdx force:auth:password:generate --setalias target --username secrets.TARGET_ORG_USERNAME --password @@Nqw936
-
-
+          echo ${{ secrets.SF_LOGIN_URL }} > ./SFDX_DEVELOPER_URL.txt
       - name: Deploy source code
         env:
           SFDX_DEFAULTUSERNAME: ${{ secrets.TARGET_ORG_USERNAME }}
         run: sfdx force:source:deploy --sourcepath force-app --json
+      - name: Authenticate to Developer Org
+        run: |
+          echo ${{ secrets.SF_USERNAME }} > ./SFDX_USERNAME.txt
+          echo ${{ secrets.SF_PASSWORD }} > ./SFDX_PASSWORD.txt
+          sfdx force:auth:web:login -a DevOrg -d -s -r https://test.salesforce.com -u `cat ./SFDX_USERNAME.txt` -p `cat ./SFDX_PASSWORD.txt`
