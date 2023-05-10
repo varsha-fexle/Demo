@@ -19,6 +19,8 @@ jobs:
         run: |
           echo "${{ secrets.TARGET_ORG_JWT }}" | base64 -d > jwt.key
           sfdx force:auth:jwt:grant --clientid "${{ secrets.TARGET_ORG_CONSUMER_KEY }}" --jwtkeyfile jwt.key --username "${{ secrets.TARGET_ORG_USERNAME }}" --setdefaultdevhubusername -a target
+          sfdx force:auth:password:generate --setalias target --username secrets.TARGET_ORG_USERNAME --password @@Nqw936
+
 
       - name: Deploy source code
         env:
