@@ -4,20 +4,23 @@ on:
   push:
     branches:
       - Actions
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source code
         uses: actions/checkout@v2
+
       - name: Install Salesforce CLI
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2
         with:
-          node-version: '16.X'
+          node-version: '16.x'
+
       - name: Authorize target org
         run: |
-          echo ${{ secrets.TARGET_ORG_JWT }} | base64 -d > jwt.key
-          sfdx force:auth:jwt:grant --clientid ${{ 3MVG9wt4IL4O5wvK.NMA6OH2BBOVlh_dw2bTLeZ7fe3VxXwlM13Li3O3ZaQJWg1l_a4yLB3QR0nwiYG.te38Z }} --jwtkeyfile jwt.key --username ${{ nitin.rajput@fexle.com.training.staging }} --setdefaultdevhubusername -a target
+          echo "${{ secrets.TARGET_ORG_JWT }}" | base64 -d > jwt.key
+          sfdx force:auth:jwt:grant --clientid "${{ secrets.TARGET_ORG_CONSUMER_KEY }}" --jwtkeyfile jwt.key --username "${{ secrets.TARGET_ORG_USERNAME }}" --setdefaultdevhubusername -a target
+
       - name: Deploy source code
         run: sfdx force:source:deploy --sourcepath force-app --targetusername target --json
-
