@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-      - "Actions"
+      - Actions
 name: DeploytoSalesforceProduction
 jobs:
   deploy:
