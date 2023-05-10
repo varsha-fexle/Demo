@@ -1,8 +1,8 @@
-name: Deploy to Dev Org
+name: push
 on:
   push:
     branches:
-      - main
+      - Actions
 jobs:
   deploy:
     runs-on: ubuntu-latest
