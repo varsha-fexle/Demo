@@ -1,4 +1,4 @@
-name: pushToFeature
+name: push
 on:
   push:
     branches:
