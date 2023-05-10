@@ -17,7 +17,7 @@ jobs:
 
       - name: SFDX Auth
         env:
-          SFDX_JWT_KEY: ${{ secrets.TARGET_ORG_CONSUMER_KEY }}
+          TARGET_ORG_CONSUMER_KEY: ${{ secrets.TARGET_ORG_CONSUMER_KEY }}
           SFDX_CLIENT_ID: ${{ secrets.SFDX_CLIENT_ID }}
         run: |
           echo "${SFDX_JWT_KEY}" > server.key
@@ -28,7 +28,7 @@ jobs:
       - name: Build, Test & Deploy
         uses: gfarb/sfdx-deploy@v1
         env:
-          TARGET_USERNAME: nitin.rajput@fexle.com.training.staging
+          TARGET_USERNAME: sendgrid@fexle.com.dev
           SOURCE_PATH: force-app
           DESTRUCTIVE_CHANGES: destructive-changes
           TEST_LEVEL: RunLocalTests
