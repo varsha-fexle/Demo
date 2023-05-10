@@ -1,13 +1,23 @@
-name: SFDX-CLI Deploy from Repository
-on: [push]
+name: deploy
+
+on:
+  push:
+    branches:
+      - Actions
+
 jobs:
-  SFDX-CLI-Deploy:
+  deploy:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "🐧 GitHub Action running on ${{ runner.os }}"
-      - run: echo "🔎 Retrieving ${{ github.ref }} from ${{ github.repository }}."
-      - uses: actions/checkout@v2
-      - run: npm install sfdx-cli -g
-      - run: echo "${{ secrets.SALESFORCE_JWT_SECRET_KEY }}" > server.key
-      - run: sfdx force:auth:jwt:grant --clientid=${{ secrets.SFDX_CLIENT_ID }} --jwtkeyfile=server.key --username=sendgrid@fexle.com.dev --setdefaultdevhubusername
-      - run: sfdx force:source:deploy --manifest=manifest/package.xml --testlevel=RunLocalTests -u sendgrid@fexle.com.dev
+      - name: Checkout source code
+        uses: actions/checkout@v2
+      - name: Install Salesforce CLI
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14
+      - name: Authorize target org
+        run: |
+          echo ${{ secrets.TARGET_ORG_JWT }} | base64 -d > jwt.key
+          sfdx force:auth:jwt:grant --clientid ${{ secrets.TARGET_ORG_CONSUMER_KEY }} --jwtkeyfile jwt.key --username ${{ secrets.TARGET_ORG_USERNAME }} --setdefaultdevhubusername -a target
+      - name: Deploy source code
+        run: sfdx force:source:deploy --sourcepath force-app --targetusername target --json
