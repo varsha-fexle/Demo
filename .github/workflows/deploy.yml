@@ -34,7 +34,7 @@ jobs:
       - name: Build, Test & Deploy
         uses: gfarb/sfdx-deploy@v1
         env:
-          TARGET_USERNAME: nitin.rajput@fexle.com.training.staging
+          TARGET_USERNAME: sendgrid@fexle.com.dev
           SOURCE_PATH: force-app
           DESTRUCTIVE_CHANGES: destructive-changes
           TEST_LEVEL: RunLocalTests
