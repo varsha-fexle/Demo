@@ -11,8 +11,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Install Salesforce CLI
-        run : wget -qO- https://developer.salesforce.com/media/salesforce-cli/sfdx-linux-amd64.tar.xz | tar xJf - && sudo ./sfdx/install
-
+        run : wget -qO- https://developer.salesforce.com/media/salesforce-cli/sfdx-linux-amd64.tar.xz | tar xJf - ./sfdx/install
 
       - name: Authorize target org
         run: |
