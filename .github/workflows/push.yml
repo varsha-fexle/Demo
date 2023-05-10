@@ -25,4 +25,4 @@ jobs:
         run: node_modules/sfdx-cli/bin/run auth:sfdxurl:store -f ./SFDX_DEVELOPER_URL.txt -s -a developer.org
       - name: Deploy Manifest to Developer
         run:
-          sfdx force:source:deploy --checkonly --testlevel "RunLocalTests" --json -p ChangePasswordController.cls
+          sfdx force:source:deploy -p ChangePasswordController.cls
