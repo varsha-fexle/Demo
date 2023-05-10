@@ -1,7 +1,6 @@
 name: pushFeature
 
-on:
-  push:
+on: [push]
     branches:
       - Actions
 jobs:
