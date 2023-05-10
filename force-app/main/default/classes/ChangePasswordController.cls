@@ -1,22 +1,6 @@
 /**
- * An apex page 
- * controller 
- * that 
- * exposes the change 
- * password 
- * abc
- * bca
- * ccc
- * ccc
- * ccc
- * ccc
- * ccc
- * ccc
- * functionality
- * functionality
- * ccc
- * ccc
- */
+ * An apex page controller that exposes the change password functionality
+ **/
 public with sharing class ChangePasswordController {
     public String oldPassword {get; set;}
     public String newPassword {get; set;}
