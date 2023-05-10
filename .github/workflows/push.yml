@@ -20,7 +20,7 @@ jobs:
           TARGET_ORG_CONSUMER_KEY: ${{ secrets.TARGET_ORG_CONSUMER_KEY }}
           SFDX_CLIENT_ID: ${{ secrets.SFDX_CLIENT_ID }}
         run: |
-          echo "${SFDX_JWT_KEY}" > server.key
+          echo "${TARGET_ORG_CONSUMER_KEY}" > server.key
           npx sfdx force:auth:jwt:grant --clientid "${SFDX_CLIENT_ID}" --jwtkeyfile server.key --username nitin.rajput@fexle.com.training.staging --setdefaultdevhubusername
           npx sfdx force:org:display --json -u nitin.rajput@fexle.com.training.staging > sfdx-auth.json
           rm server.key
