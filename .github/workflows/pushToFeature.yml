@@ -13,7 +13,7 @@ jobs:
       - name: Install Salesforce CLI
         uses: actions/setup-node@v1
         with:
-          node-version: 14
+          node-version: '16.X'
       - name: Authorize target org
         run: |
           echo ${{ secrets.TARGET_ORG_JWT }} | base64 -d > jwt.key
