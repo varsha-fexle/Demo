@@ -12,7 +12,7 @@ jobs:
         with:
           node-version: '14.x'
       - name: Install Salesforce CLI
-        uses: varsha-fexle/Demo@v2
+        uses: varsha-fexle/Demo@v2.304
       - name: Authenticate with Salesforce Org
         run: sfdx force:auth:jwt:grant --clientid ${{ secrets.TARGET_ORG_CONSUMER_KEY }} --jwtkeyfile server.key --username ${{ secrets.TARGET_ORG_USERNAME }} --setdefaultdevhubusername --setdefaultusername
       - name: Deploy to Salesforce Org
