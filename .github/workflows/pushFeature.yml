@@ -10,10 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v2.4.2
+        uses: actions/checkout@v2.5.1
 
       - name: Install Salesforce CLI
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v2.4.0
         with:
           node-version: '16.x'
 
@@ -23,4 +23,6 @@ jobs:
           sfdx force:auth:jwt:grant --clientid "${{ secrets.TARGET_ORG_CONSUMER_KEY }}" --jwtkeyfile jwt.key --username "${{ secrets.TARGET_ORG_USERNAME }}" --setdefaultdevhubusername -a target
 
       - name: Deploy source code
-        run: sfdx force:source:deploy --sourcepath force-app --targetusername secrets.TARGET_ORG_USERNAME --json
+        env:
+          SFDX_DEFAULTUSERNAME: ${{ secrets.TARGET_ORG_USERNAME }}
+        run: sfdx force:source:deploy --sourcepath force-app --json
