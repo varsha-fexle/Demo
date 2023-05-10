@@ -1,8 +1,8 @@
+name: push
 on:
   push:
     branches:
       - Actions
-name: DeploytoSalesforceProduction
 jobs:
   deploy:
     runs-on: ubuntu-latest
