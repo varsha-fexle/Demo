@@ -3,7 +3,7 @@ name: Salesforce Deploy
 on:
   push:
     branches:
-      - main
+      - actions
 
 jobs:
   deploy:
