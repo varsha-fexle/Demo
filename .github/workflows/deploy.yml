@@ -1,9 +1,9 @@
-name: deploy
+name: Salesforce Deploy
 
 on:
   push:
     branches:
-      - Actions
+      - main
 
 jobs:
   deploy:
@@ -11,8 +11,10 @@ jobs:
     steps:
       - name: Checkout source code
         uses: actions/checkout@v2
-      - name: Install SFDX
-        run: npm install -g  sfdx-cli
+      - name: Install Salesforce CLI
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14
       - name: Authorize target org
         run: |
           echo ${{ secrets.TARGET_ORG_JWT }} | base64 -d > jwt.key
