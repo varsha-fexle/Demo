@@ -10,9 +10,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v2
+        uses: Demo/checkout@v2
       - name: Install Salesforce CLI
-        uses: actions/setup-node@v1
+        uses: Demo/setup-node@v1
         with:
           node-version: 14
       - name: Authorize target org
