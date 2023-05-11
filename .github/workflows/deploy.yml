@@ -32,7 +32,7 @@ jobs:
 
       - name: Authenticate Dev Hub
         run: sfdx auth:sfdxurl:store -f ./DEVHUB_SFDX_URL.txt -a devhub -d
-
+        
       - name: Build, Test & Deploy
         uses: gfarb/sfdx-deploy@v1
         env:
