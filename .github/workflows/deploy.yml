@@ -1,23 +1,41 @@
-name: deploy
-
 on:
   push:
     branches:
       - Actions
-
+name: deploy
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout source code
-        uses: actions/checkout@v2
-      - name: Install Salesforce CLI
-        uses: actions/setup-node@v1
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
         with:
-          node-version: 14
-      - name: Authorize target org
+          node-version: "16.x"
+
+      - name: Install Dependencies
         run: |
-          echo ${{ secrets.SFDX_URL }} | base64 -d > jwt.key
-          sfdx force:auth:jwt:grant --clientid ${{ secrets.TARGET_ORG_CONSUMER_KEY }} --jwtkeyfile jwt.key --username ${{ secrets.TARGET_ORG_USERNAME }} --setdefaultdevhubusername -a target
-      - name: Deploy source code
-        run: sfdx force:source:deploy --sourcepath force-app --targetusername target --json
+          npm install -g sfdx-cli
+          #npm install gfarb/sfdx-deploy@v1
+
+      - name: SFDX Auth
+        env:
+          SFDX_JWT_KEY: ${{ secrets.SFDX_JWT_KEY }}
+          SFDX_CLIENT_ID: ${{ secrets.SFDX_CLIENT_ID }}
+        run: |
+          echo "${SFDX_JWT_KEY}" > server.key
+          npx sfdx force:auth:jwt:grant --clientid "${SFDX_CLIENT_ID}" --jwtkeyfile "${SFDX_JWT_KEY}" --username sendgrid@fexle.com.dev --setdefaultdevhubusername
+          npx sfdx force:org:display --json -u sendgrid@fexle.com.dev > sfdx-auth.json
+          rm server.key
+          
+
+      - name: Build, Test & Deploy
+        uses: gfarb/sfdx-deploy@v1
+        env:
+          TARGET_USERNAME: sendgrid@fexle.com.dev
+          SOURCE_PATH: force-app
+          DESTRUCTIVE_CHANGES: destructive-changes
+          TEST_LEVEL: RunLocalTests
+          WAIT: 200
