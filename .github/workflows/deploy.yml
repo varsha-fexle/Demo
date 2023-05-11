@@ -17,7 +17,7 @@ jobs:
           node-version: 14
       - name: Authorize target org
         run: |
-          echo ${{ secrets.TARGET_ORG_JWT }} | base64 -d > jwt.key
+          echo ${{ secrets.SFDX_JWT_KEY }} | base64 -d > jwt.key
           sfdx force:auth:jwt:grant --clientid ${{ secrets.TARGET_ORG_CONSUMER_KEY }} --jwtkeyfile jwt.key --username ${{ secrets.TARGET_ORG_USERNAME }} --setdefaultdevhubusername -a target
       - name: Deploy source code
         run: sfdx force:source:deploy --sourcepath force-app --targetusername target --json
